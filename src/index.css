@@ -641,15 +641,16 @@ a:hover {
 
 .hero-image-card {
   position: relative;
-  width: 100%;
-  max-width: 230px;
-  height: 230px;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border-strong);
   background: var(--bg-card);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(56, 189, 248, 0.2);
   transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
 
 [data-theme="light"] .hero-image-card {
@@ -1349,6 +1350,10 @@ a:hover {
   border: none;
 }
 
+.modal-mobile-notice {
+  display: none;
+}
+
 /* ==========================================================================
    Animations & Keyframes
    ========================================================================== */
@@ -1510,12 +1515,23 @@ a:hover {
   .hero-split {
     flex-direction: column-reverse;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .hero-image-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.25rem;
   }
 
   .hero-image-card {
-    max-width: 140px;
+    width: 140px;
+    min-width: 140px;
     height: 140px;
+    min-height: 140px;
+    max-width: 100%;
+    flex-shrink: 0;
   }
 
   .hero-name {
@@ -1610,6 +1626,48 @@ a:hover {
   .modal-dialog {
     height: 94dvh;
     max-height: 94dvh;
+  }
+
+  .modal-iframe {
+    display: none;
+  }
+
+  .modal-mobile-notice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .pdf-notice-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .pdf-notice-title {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .pdf-notice-text {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    max-width: 32ch;
+    line-height: 1.5;
+  }
+
+  .modal-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 240px;
   }
 }
 

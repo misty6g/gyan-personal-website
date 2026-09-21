@@ -71,6 +71,30 @@ export default function ResumeModal({ isOpen, onClose, pdfUrl }) {
             title="Gyan Mistry Resume" 
             className="modal-iframe"
           />
+          <div className="modal-mobile-notice">
+            <div className="pdf-notice-icon">📄</div>
+            <div className="pdf-notice-title">Gyan_Mistry_Resume.pdf</div>
+            <p className="pdf-notice-text">
+              Mobile browsers require opening PDFs in native full screen to view and zoom.
+            </p>
+            <div className="pdf-notice-actions">
+              <a 
+                href={pdfUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-primary modal-action-btn"
+              >
+                Open Fullscreen PDF ↗
+              </a>
+              <a 
+                href={pdfUrl} 
+                download="Gyan_Mistry_Resume.pdf" 
+                className="btn btn-secondary modal-action-btn"
+              >
+                Download PDF ⬇
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

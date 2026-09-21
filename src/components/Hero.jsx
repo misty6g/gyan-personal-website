@@ -10,6 +10,14 @@ export default function Hero({ personal, badges, socials, onOpenResume, onShowTo
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const handleViewResume = () => {
+    if (typeof window !== 'undefined' && (window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent))) {
+      window.open(personal.resumePdfUrl, '_blank');
+    } else {
+      onOpenResume?.();
+    }
+  };
+
   const getBadgeClass = (variant) => {
     switch (variant) {
       case 'defense': return 'badge-defense';
@@ -58,7 +66,7 @@ export default function Hero({ personal, badges, socials, onOpenResume, onShowTo
 
             <button 
               type="button" 
-              onClick={onOpenResume} 
+              onClick={handleViewResume} 
               className="btn btn-secondary"
               title="Quick preview resume inside browser"
             >
