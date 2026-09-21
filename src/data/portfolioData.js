@@ -130,8 +130,8 @@ export const portfolioData = {
       ],
       technologies: [
         "Python", "AI Agents", "SGML", "XML", "Jira Administration", "Microsoft Planner", "REST APIs", 
-        "Data Migration", "ETL", "Bash", "Defense Tech", "F-16 Systems", "Agile/Scrum", "DoD Secret Clearance", 
-        "Technical Documentation", "System Validation"
+        "Data Migration", "ETL", "JQL", "Bash", "Defense Tech", "Agile/Scrum", "DoD Secret Clearance", 
+        "Technical Documentation", "OpenAI API", "NVIDIA Nemotron API", "Linux", "Jupyter", "Kubernetes", "Atlassian", "Windows", "Windsurf", "Claude Code"
       ]
     },
     {
@@ -159,7 +159,7 @@ export const portfolioData = {
         "Python", "Redis", "REST APIs", "OpenAI API", "Glean API", "Jira API", "Squadcast API", 
         "Zendesk API", "Tableau", "SQL", "ETL Pipelines", "Grafana", "Exponential Backoff", 
         "Incident Management", "Root Cause Analysis (RCA)", "Automated Reporting", "BI Dashboards", 
-        "Google Sheets API", "CSV Processing"
+        "Google Sheets API", "CSV Processing", "Ai Agents", "SQL", "JQL", "Data Visualization"
       ]
     },
     {
@@ -236,10 +236,9 @@ export const portfolioData = {
         "Synchronized dynamic study blocks directly onto live calendar systems with personalized budgeting, fitness routines, resume optimization, and travel planning."
       ],
       technologies: [
-        "Python", "xAI Grok API", "Multi-Agent Systems", "Autonomous Agents", "LLMs", 
+        "xAI Grok API", "Multi-Agent Systems", "Autonomous Agents", "LLMs", 
         "Prompt Engineering", "Google Drive API", "Google Calendar API", "NLP", 
-        "Text Summarization", "Flashcard Generation", "Quiz Generation", "Conversational AI", 
-        "Workflow Automation"
+        "Workflow Automation", "MCP"
       ],
       githubUrl: "https://github.com/misty6g",
       linkedinPostUrl: "https://lnkd.in/p/gpJiiM-x",
@@ -466,8 +465,8 @@ export const portfolioData = {
       status: "Taken",
       featured: true,
       technologies: [
-        "Python", "Scikit-learn", "Supervised Learning", "Unsupervised Learning", 
-        "Support Vector Machines (SVMs)", "Neural Networks", "Bayesian Decision Theory", 
+        "Python", "Scikit-learn", "Computer Vision", "Supervised Learning", "Unsupervised Learning", 
+        "Support Vector Machines (SVMs)", "SoftMax", "Neural Networks", "Bayesian Decision Theory", 
         "Gradient Descent", "Overfitting & Regularization", "Cross-Validation", "Model Evaluation"
       ],
       description: "Foundational and modern machine learning theories and algorithms: supervised and unsupervised learning, Bayesian decision theory, support vector machines, and deep neural networks."
@@ -483,7 +482,7 @@ export const portfolioData = {
       technologies: [
         "Python", "PyTorch", "Natural Language Processing (NLP)", "Transformers", "Tokenization", 
         "Word2Vec", "BERT", "Syntactic Parsing", "Part-of-Speech Tagging", "Language Models", 
-        "Computational Linguistics", "NLTK"
+        "Computational Linguistics", "NLTK", "Jupyter Notebook", "Gradient Descent", "SoftMax", "Diacritics"
       ],
       description: "Computational processing of natural language: syntactic parsing, tokenization algorithms, word embeddings, transformer architectures, and sequence-to-sequence language modeling."
     },
@@ -528,7 +527,7 @@ export const portfolioData = {
       technologies: [
         "Python", "Pandas", "Quantitative Finance", "Algorithmic Trading", "Time Series Analysis", 
         "Statistical Arbitrage", "Market Microstructure", "Backtesting Engines", "Order Book Dynamics", 
-        "Risk Management", "Sharpe Ratio"
+        "Risk Management", "Sharpe Ratio", "Markov Chains", "Monte Carlo Simulation", "Options Trading", "Leverage Trading", "Portfolio Optimization"
       ],
       description: "Quantitative trading strategies and market microstructure: statistical arbitrage, momentum and mean-reversion modeling, algorithmic backtesting, and automated risk management systems."
     },

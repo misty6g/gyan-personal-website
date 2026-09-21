@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TechTags from './TechTags';
 
 export default function Experience({ 
   experiences, 
@@ -13,11 +14,6 @@ export default function Experience({
   const isExpanded = showAll || hasHiddenMatch;
 
   const displayedExperiences = isExpanded ? experiences : experiences.slice(0, 2);
-
-  const isTagMatched = (tech) => {
-    if (!searchQuery.trim()) return false;
-    return tech.toLowerCase().includes(searchQuery.toLowerCase().trim());
-  };
 
   return (
     <section id="experience" className="section-block">
@@ -78,20 +74,13 @@ export default function Experience({
                 ))}
               </ul>
 
-              {/* Tech Stack Pills */}
-              <div className="tag-list">
-                {exp.technologies.map((tech) => (
-                  <button
-                    key={tech}
-                    type="button"
-                    className={`tag ${isTagMatched(tech) ? 'tag-matched' : ''}`}
-                    onClick={() => onSelectTag(tech)}
-                    title={`Filter by ${tech}`}
-                  >
-                    {tech}
-                  </button>
-                ))}
-              </div>
+              {/* Tech Stack Pills (Top 5 with Show More) */}
+              <TechTags
+                tags={exp.technologies}
+                searchQuery={searchQuery}
+                onSelectTag={onSelectTag}
+                limit={5}
+              />
             </article>
           );
         })}

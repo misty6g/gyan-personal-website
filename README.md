@@ -7,16 +7,16 @@ A fast, barebones, modern developer portfolio website designed specifically for 
 - **⚡ Recruiter Technology Search**: Type any skill or language (e.g. `Python`, `Rust`, `React`, `Docker`, `Tableau`, `MediaPipe`, `SQL`) to instantly see where it was used, with real-time match counters, accent glow spotlights, and quick-jump navigation.
 - **🛡️ Recruiter Fast-Facts Snapshot**: Highlights active U.S. DoD Secret Clearance, '27 Summer internship goal, RIT Presidential Scholar honors, and first graduate of RIT's BS in AI program.
 - **📄 Resume Integration**: Direct one-click download of `Gyan_Mistry_Resume_9262.pdf` and an embedded in-browser preview modal.
-- **💼 Complete Work Experience**: Detailed impact metrics and bullet points from Lockheed Martin (F-16 IFG team), Redis (Cloud Operations R&D), RIT athletics/mentorship, and youth leadership.
+- **💼 Complete Work Experience**: Detailed impact metrics and bullet points from Lockheed Martin (F-16 IFG team), Redis (Cloud Operations R&D), RIT athletics/mentorship, and youth leadership with clean top-two default view.
 - **🚀 Featured Projects**:
-  - **Orbit**: Autonomous Multi-Agent OS (xAI Grok Competition Winner)
+  - **Orbit**: Autonomous Multi-Agent OS (xAI Grok Competition Winner, with LinkedIn announcement link)
   - **ASL Study Tool**: Full-stack web app with real-time MediaPipe computer vision (Live on Vercel: https://asl-study-tool-kqbn-one.vercel.app/)
-  - **Kalshi Quant**: High-throughput polyglot Python + Rust prediction market execution engine
-  - **NFL Prediction Pipeline**: Quantitative sports modeling with Kalman filters and XGBoost
-- **📚 Coursework & Class List**: Pre-populated with core RIT courses (NLP, ML, Enterprise Software, Stock Algo Trading, Linear Algebra, ASL Immersion) plus an extensible template for your full class list.
-- **🌐 Social Hub**: Configured with LinkedIn, GitHub, Email, Live Vercel link, and ready placeholder slots for X/Twitter, Instagram, Discord, Spotify, etc.
+  - **Kalshi Quant & Betting Agent**: High-throughput polyglot Python + Rust prediction market execution engine
+  - Plus 8 more open-source repositories from GitHub (Lane Assist Lite, CUDA Kernel Lab, Spike Rally, Anime Frame Search, Gridiron Market Lab, Thrift Swipe, Mancala Move Calculator, Clash Royale Bot).
+- **📚 Coursework & Class List**: Full catalog of 32 RIT courses with official descriptions and extrapolated technical skills, with top 8 flagship courses shown by default.
+- **🌐 Social Hub**: LinkedIn, GitHub, Twitter / X, Spotify, Email, and Live ASL Web App.
 - **🌓 Dark & Light Mode**: Minimalist high-contrast developer theme persisted in `localStorage`.
-- **📦 Zero-Bloat Architecture**: Pure React 18 + Vite with clean CSS variables. 100% responsive, sub-second loads, 0 heavy UI dependencies.
+- **📱 Responsive Mobile Navigation**: Built with full mobile drawer navigation and touch targets >= 44px.
 
 ---
 
@@ -46,62 +46,57 @@ npm run preview
 
 ---
 
-## How to Customize
+## Where to Add & Edit Skills Manually
 
-All portfolio content is centralized in **`src/data/portfolioData.js`**. You do not need to touch UI components to update your information!
+All skills and technologies are stored in **[`src/data/portfolioData.js`](file:///Users/gyanmistry/SoftdevI/gyan-personal-webiste/src/data/portfolioData.js)**. When you add or modify a skill here, it is automatically displayed on the cards and linked into the top recruiter search bar!
 
-### Adding Your Class List
-Open `src/data/portfolioData.js` and locate the `coursework` array. You can add new entries using this format:
-
-```javascript
-{
-  id: "cs-distributed-systems",
-  code: "CSCI 452",
-  title: "Operating & Distributed Systems",
-  category: "Software Engineering",
-  term: "Fall 2026",
-  status: "Completed", // or "In Progress"
-  technologies: ["C", "Linux", "POSIX", "Sockets"],
-  description: "Concurrency, process scheduling, virtual memory, synchronization primitives, and distributed message passing."
-}
-```
-
-### Adding Social Media Links
-Open `src/data/portfolioData.js` and locate the `socials` array. Replace the empty `url` string for any platform:
+### 1. Work Experience Skills
+Locate `portfolioData.experiences` in [`src/data/portfolioData.js`](file:///Users/gyanmistry/SoftdevI/gyan-personal-webiste/src/data/portfolioData.js).
+Each job entry has a `technologies` array:
 
 ```javascript
-{
-  platform: "X / Twitter",
-  url: "https://x.com/yourhandle",
-  handle: "@yourhandle",
-  icon: "twitter",
-  primary: false
-}
+// Example: Lockheed Martin (around line 140)
+technologies: [
+  "Python", "AI Agents", "SGML", "XML", "Jira Administration",
+  "Your New Skill Here" // <-- Simply add strings here
+]
 ```
 
-### Adding New GitHub Projects
-Add an object to `portfolioData.projects`:
+### 2. Project Skills
+Locate `portfolioData.projects` in [`src/data/portfolioData.js`](file:///Users/gyanmistry/SoftdevI/gyan-personal-webiste/src/data/portfolioData.js).
+Each project has a `technologies` array:
 
 ```javascript
-{
-  id: "my-new-project",
-  title: "Project Name",
-  subtitle: "Short Subtitle",
-  badge: "Featured / Award",
-  description: "High-level summary of what problem it solves.",
-  highlights: [
-    "Key architectural achievement 1",
-    "Performance metric or algorithm 2"
-  ],
-  technologies: ["Python", "Docker", "PyTorch"],
-  githubUrl: "https://github.com/misty6g/repo",
-  liveUrl: "https://myproject.vercel.app",
-  featured: true
-}
+// Example: Orbit or ASL Study Tool (around line 230)
+technologies: [
+  "React 19", "TypeScript", "Google MediaPipe Tasks Vision",
+  "Your New Skill Here" // <-- Simply add strings here
+]
 ```
 
-### Updating Resume PDF
-To update your resume, simply replace `public/resume.pdf` with your updated PDF file. The download button and in-browser preview will automatically serve the updated version.
+### 3. Coursework Skills
+Locate `portfolioData.coursework` in [`src/data/portfolioData.js`](file:///Users/gyanmistry/SoftdevI/gyan-personal-webiste/src/data/portfolioData.js).
+Each of the 32 courses has a `technologies` array:
+
+```javascript
+// Example: CSCI 335 Machine Learning (around line 430)
+technologies: [
+  "Python", "Scikit-learn", "Support Vector Machines (SVMs)",
+  "Your New Skill Here" // <-- Simply add strings here
+]
+```
+
+### 4. Overall Technical Skills Matrix
+Locate `portfolioData.skills` in [`src/data/portfolioData.js`](file:///Users/gyanmistry/SoftdevI/gyan-personal-webiste/src/data/portfolioData.js) (around line 95):
+
+```javascript
+skills: {
+  "Programming Languages": ["Python", "Rust", "C++", ...],
+  "Frameworks & AI/ML": ["PyTorch", "React 19", ...],
+  "Data, Cloud & DevOps": ["Redis", "Docker", ...],
+  "Systems, Quant & Methodologies": ["Multi-Agent Systems", ...]
+}
+```
 
 ---
 
@@ -113,17 +108,9 @@ This site is a static React single-page app and can be deployed anywhere in seco
 1. Push your repository to GitHub:
    ```bash
    git add .
-   git commit -m "Initial commit of recruiter portfolio"
+   git commit -m "Comprehensive portfolio ready for deployment"
    git push origin main
    ```
 2. Go to [vercel.com](https://vercel.com), import your repository `gyan-personal-webiste`.
 3. Framework Preset: **Vite**.
 4. Click **Deploy**.
-
-### Deploy to Netlify
-1. Run `npm run build`.
-2. Drag and drop the `dist/` folder into Netlify, or link the GitHub repo with build command `npm run build` and publish directory `dist`.
-
-### Deploy to GitHub Pages
-1. Set `base: './'` or `base: '/<repo-name>/'` in `vite.config.js`.
-2. Run `npm run build` and push the `dist/` branch or use GitHub Actions.

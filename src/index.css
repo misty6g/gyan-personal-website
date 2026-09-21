@@ -791,6 +791,20 @@ a:hover {
   color: var(--text-accent);
 }
 
+.tag-expand-btn {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border-strong);
+  color: var(--text-accent);
+  font-weight: 500;
+}
+
+.tag-expand-btn:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--text-accent);
+  color: var(--text-accent-hover);
+}
+
 .card-links {
   display: flex;
   align-items: center;

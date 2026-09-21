@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TechTags from './TechTags';
 
 export default function Projects({ 
   projects, 
@@ -13,11 +14,6 @@ export default function Projects({
   const isExpanded = showAll || hasHiddenMatch;
 
   const displayedProjects = isExpanded ? projects : projects.slice(0, 3);
-
-  const isTagMatched = (tech) => {
-    if (!searchQuery.trim()) return false;
-    return tech.toLowerCase().includes(searchQuery.toLowerCase().trim());
-  };
 
   return (
     <section id="projects" className="section-block">
@@ -73,20 +69,13 @@ export default function Projects({
                 ))}
               </ul>
 
-              {/* Technology Tags */}
-              <div className="tag-list">
-                {proj.technologies.map((tech) => (
-                  <button
-                    key={tech}
-                    type="button"
-                    className={`tag ${isTagMatched(tech) ? 'tag-matched' : ''}`}
-                    onClick={() => onSelectTag(tech)}
-                    title={`Filter by ${tech}`}
-                  >
-                    {tech}
-                  </button>
-                ))}
-              </div>
+              {/* Technology Tags (Top 5 with Show More) */}
+              <TechTags
+                tags={proj.technologies}
+                searchQuery={searchQuery}
+                onSelectTag={onSelectTag}
+                limit={5}
+              />
 
               {/* Links Hub */}
               <div className="card-links">

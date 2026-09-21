@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import TechTags from './TechTags';
 
 export default function Coursework({ 
   coursework, 
@@ -31,11 +32,6 @@ export default function Coursework({
     }
     return list;
   }, [coursework, isExpanded, selectedCategory]);
-
-  const isTagMatched = (tech) => {
-    if (!searchQuery.trim()) return false;
-    return tech.toLowerCase().includes(searchQuery.toLowerCase().trim());
-  };
 
   return (
     <section id="coursework" className="section-block">
@@ -88,19 +84,14 @@ export default function Coursework({
                 <p className="course-desc">{course.description}</p>
               </div>
 
-              {/* Technologies / Extrapolated Skills */}
-              <div className="tag-list" style={{ marginTop: '0.75rem' }}>
-                {course.technologies.map((tech) => (
-                  <button
-                    key={tech}
-                    type="button"
-                    className={`tag ${isTagMatched(tech) ? 'tag-matched' : ''}`}
-                    onClick={() => onSelectTag(tech)}
-                    title={`Filter by ${tech}`}
-                  >
-                    {tech}
-                  </button>
-                ))}
+              {/* Technologies / Extrapolated Skills (Top 5 with Show More) */}
+              <div style={{ marginTop: '0.75rem' }}>
+                <TechTags
+                  tags={course.technologies}
+                  searchQuery={searchQuery}
+                  onSelectTag={onSelectTag}
+                  limit={5}
+                />
               </div>
             </div>
           );
