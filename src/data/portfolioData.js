@@ -23,6 +23,7 @@ export const portfolioData = {
     clearance: "Active U.S. Department of Defense Secret Security Clearance",
     statusBadge: "Seeking '27 Summer Internships",
     resumePdfUrl: "/resume.pdf",
+    avatarUrl: "/gyan.jpg",
     about: [
       "AI & Software Engineering student at RIT building high-performance distributed systems, ML pipelines, and autonomous agent infrastructure."
     ],
