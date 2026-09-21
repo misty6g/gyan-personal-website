@@ -24,6 +24,9 @@ export const portfolioData = {
     statusBadge: "Seeking '27 Summer Internships",
     resumePdfUrl: "/resume.pdf",
     about: [
+      "AI & Software Engineering student at RIT building high-performance distributed systems, ML pipelines, and autonomous agent infrastructure."
+    ],
+    fullBio: [
       "I am an Artificial Intelligence undergraduate at RIT (Presidential Scholar, Dean's List) with minors in Software Engineering, Applied Statistics, and Math. I am on track to be the first graduate of RIT's Artificial Intelligence degree program.",
       "Over the past two summers, I shipped production-scale automation and ML systems in high-stakes environments. At Lockheed Martin, I held an active DoD Secret clearance with the F-16 IFG team, building AI agents to convert technical orders from SGML to XML (hitting an 80% accuracy target) and automating zero-data-loss ticket migrations from MS Planner to Jira. At Redis, I built Python automation pipelines integrating Glean, Jira, and Squadcast REST APIs to process 4,000+ tickets (cutting categorization time by 95%), while automating executive reporting from 4 hours down to 3 minutes.",
       "Outside of internships, I engineer high-performance systems: a Kalshi prediction-market trading engine in Python and Rust, autonomous multi-agent operating systems, computer vision models, and sports analytics pipelines. I also lead the RIT Men's Club Volleyball team as Captain and ECVA All-Star. I work primarily in Python, PyTorch, and TypeScript, with growing depth in Rust, C++, Docker, and distributed cloud systems."

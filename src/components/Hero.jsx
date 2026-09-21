@@ -32,20 +32,10 @@ export default function Hero({ personal, badges, socials, onOpenResume, onShowTo
       </div>
 
       <h1 className="hero-name">{personal.name}</h1>
-      <div className="hero-title">{personal.title}</div>
-      <div className="hero-location">
-        <span>📍 {personal.location}</span>
-        <span className="location-divider">/</span>
-        <span>{personal.phone}</span>
-        <span className="location-divider">/</span>
-        <a href={`mailto:${personal.email}`}>{personal.email}</a>
-      </div>
 
-      {/* Recruiter Bio */}
+      {/* Recruiter Bio / Value Proposition */}
       <div className="hero-bio">
-        {personal.about.map((paragraph, idx) => (
-          <p key={idx}>{paragraph}</p>
-        ))}
+        <p>{personal.about[0]}</p>
       </div>
 
       {/* Quick Action Buttons */}
@@ -85,25 +75,6 @@ export default function Hero({ personal, badges, socials, onOpenResume, onShowTo
         >
           {copied ? "✓ Copied!" : "📋 Copy Email"}
         </button>
-      </div>
-
-      {/* Social Media & Profiles Hub */}
-      <div className="socials-hub">
-        <div className="socials-title mono">Profiles & Links</div>
-        <div className="social-pills-list">
-          {socials.map((item, idx) => (
-            <a
-              key={idx}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-pill"
-            >
-              <span>{item.platform}:</span>
-              <strong className="mono">{item.handle} ↗</strong>
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );

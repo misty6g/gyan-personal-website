@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Header({ theme, toggleTheme, onOpenResume }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMenu = () => setMobileMenuOpen(false);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="site-header">
-      <div className="container header-inner">
+    <header className={`site-header ${mobileMenuOpen ? 'menu-open open' : ''}`}>
+      <div className="container header-inner header-container">
         <a href="#" className="brand-logo" onClick={closeMenu}>
           <span className="brand-prompt">&gt;</span>
           <span>gyan.mistry</span>
@@ -86,18 +95,35 @@ export default function Header({ theme, toggleTheme, onOpenResume }) {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer & Backdrop */}
       {mobileMenuOpen && (
-        <div className="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
-          <ul className="mobile-nav-list">
-            <li><a href="#experience" onClick={closeMenu}>Experience</a></li>
-            <li><a href="#projects" onClick={closeMenu}>Projects</a></li>
-            <li><a href="#coursework" onClick={closeMenu}>Coursework</a></li>
-            <li><a href="#skills" onClick={closeMenu}>Skills</a></li>
-            <li><a href="#education" onClick={closeMenu}>Education</a></li>
-            <li><a href="#extracurriculars" onClick={closeMenu}>Extracurriculars</a></li>
-          </ul>
-        </div>
+        <>
+          <div 
+            className="mobile-nav-backdrop" 
+            onClick={closeMenu} 
+            aria-hidden="true" 
+          />
+          <div className="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+            <ul className="mobile-nav-list">
+              <li><a href="#experience" onClick={closeMenu}>Experience</a></li>
+              <li><a href="#projects" onClick={closeMenu}>Projects</a></li>
+              <li><a href="#coursework" onClick={closeMenu}>Coursework</a></li>
+              <li><a href="#skills" onClick={closeMenu}>Skills</a></li>
+              <li><a href="#education" onClick={closeMenu}>Education</a></li>
+              <li><a href="#extracurriculars" onClick={closeMenu}>Extracurriculars</a></li>
+              <li className="mobile-drawer-resume-item">
+                <button 
+                  type="button" 
+                  onClick={() => { closeMenu(); onOpenResume(); }} 
+                  className="btn btn-secondary mono mobile-drawer-resume-btn"
+                  title="View Resume PDF"
+                >
+                  📄 View Resume.pdf
+                </button>
+              </li>
+            </ul>
+          </div>
+        </>
       )}
     </header>
   );

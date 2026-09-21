@@ -23,7 +23,7 @@ export default function Education({ education }) {
                   {edu.degree}
                 </div>
                 {edu.note && (
-                  <div style={{ fontSize: '0.85rem', color: 'var(--accent-amber)', marginTop: '0.35rem' }}>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-accent)', marginTop: '0.35rem' }}>
                     * {edu.note}
                   </div>
                 )}

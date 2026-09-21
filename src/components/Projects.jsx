@@ -49,8 +49,7 @@ export default function Projects({
                       href={proj.liveUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="btn btn-primary"
-                      style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+                      className="btn btn-primary card-action-btn"
                     >
                       Live Demo ↗
                     </a>
@@ -107,22 +106,6 @@ export default function Projects({
                       <circle cx="4" cy="4" r="2"></circle>
                     </svg>
                     LinkedIn Announcement ↗
-                  </a>
-                )}
-
-                {proj.liveUrl && (
-                  <a 
-                    href={proj.liveUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="link-item"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="2" y1="12" x2="22" y2="12"></line>
-                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                    </svg>
-                    Production Deployment ↗
                   </a>
                 )}
               </div>

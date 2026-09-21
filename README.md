@@ -1,4 +1,4 @@
-# Gyan Mistry — Recruiter Portfolio Website
+# Gyan Mistry - Recruiter Portfolio Website
 
 A fast, barebones, modern developer portfolio website designed specifically for tech recruiters and hiring managers. Features an interactive technology search engine, complete LinkedIn work experience, award-winning GitHub projects, RIT coursework list, and one-click resume access.
 

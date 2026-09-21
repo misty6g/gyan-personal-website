@@ -8,13 +8,16 @@ export default function ResumeModal({ isOpen, onClose, pdfUrl }) {
 
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
 
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -38,8 +41,7 @@ export default function ResumeModal({ isOpen, onClose, pdfUrl }) {
             <a 
               href={pdfUrl} 
               download="Gyan_Mistry_Resume.pdf" 
-              className="btn btn-primary"
-              style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+              className="btn btn-primary modal-action-btn"
             >
               ⬇ Download
             </a>
@@ -47,15 +49,14 @@ export default function ResumeModal({ isOpen, onClose, pdfUrl }) {
               href={pdfUrl} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="btn btn-secondary"
-              style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+              className="btn btn-secondary modal-action-btn"
             >
               ↗ Open Tab
             </a>
             <button 
               type="button" 
-              className="btn-icon" 
-              onClick={onClose}
+              className="btn-icon modal-close-btn" 
+              onClick={onClose} 
               aria-label="Close modal"
               title="Close modal (Esc)"
             >
