@@ -114,7 +114,14 @@ export default function Header({ theme, toggleTheme, onOpenResume }) {
               <li className="mobile-drawer-resume-item">
                 <button 
                   type="button" 
-                  onClick={() => { closeMenu(); onOpenResume(); }} 
+                  onClick={() => { 
+                    closeMenu(); 
+                    if (typeof window !== 'undefined' && (window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent))) {
+                      window.open('/resume.pdf', '_blank');
+                    } else {
+                      onOpenResume();
+                    }
+                  }} 
                   className="btn btn-secondary mono mobile-drawer-resume-btn"
                   title="View Resume PDF"
                 >
