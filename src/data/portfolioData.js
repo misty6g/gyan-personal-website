@@ -79,8 +79,8 @@ export const portfolioData = {
     },
     {
       platform: "Live Web App",
-      url: "https://asl-study-tool-kqbn-one.vercel.app/",
-      handle: "asl-study-tool.vercel.app",
+      url: "https://asl-study-tool-theta.vercel.app/",
+      handle: "asl-study-tool-theta.vercel.app",
       icon: "globe"
     }
   ],
@@ -90,16 +90,16 @@ export const portfolioData = {
    */
   skills: {
     "Programming Languages": [
-      "Python", "Rust", "C++", "Java", "TypeScript", "JavaScript", "SQL", "C", "Go", "Bash", "C#", "MongoDB"
+      "Python", "Rust", "C++", "Java", "TypeScript", "JavaScript", "SQL", "C", "Go", "Bash", "C#", "TI-BASIC", "MongoDB"
     ],
     "Frameworks & AI/ML": [
-      "PyTorch", "TensorFlow", "Scikit-learn", "React 19", "Node.js", "Express", "MediaPipe", "FAISS", "XGBoost", "Pandas", "Polars", "PyArrow", "OpenCV", "CUDA"
+      "PyTorch", "FastAPI", "Next.js", "Flask", "Hugging Face Transformers", "sentence-transformers", "NumPy", "TensorFlow", "Scikit-learn", "React 19", "React Native", "Expo", "Node.js", "Express", "Three.js", "Tailwind CSS", "Gradio", "Zustand", "MediaPipe", "FAISS", "LSTM", "Matplotlib", "Pydantic", "TanStack Query", "Pandas", "OpenCV", "CUDA"
     ],
     "Data, Cloud & DevOps": [
-      "Redis", "Docker", "PostgreSQL", "Supabase", "TimescaleDB", "Grafana", "Tableau", "Jira", "Squadcast", "OpenAI API", "xAI Grok API", "Vercel", "Render", "Git", "Linux"
+      "Kubernetes", "Docker", "Docker Compose", "OpenTelemetry", "Firebase", "Firestore", "SQLAlchemy", "SQLite", "Redis", "PostgreSQL", "Supabase", "HDF5", "Grafana", "Tableau", "OpenAPI", "GitHub Actions", "pytest", "Playwright", "Vitest", "Jest", "CMake", "ffmpeg", "Jira", "Squadcast", "OpenAI API", "xAI Grok API", "NVIDIA Nemotron", "Nebius Token Factory", "Vercel", "Render", "Git", "Linux"
     ],
     "Systems, Quant & Methodologies": [
-      "Multi-Agent Systems", "Large Language Models (LLMs)", "Computer Vision", "High-Performance Computing (HPC)", "Bayesian Modeling", "Kalman Filtering", "Algorithmic Trading", "Minimax Game Theory", "WebSockets", "Agile/Scrum", "CI/CD", "Enterprise Architecture"
+      "Multi-Agent Systems", "Retrieval-Augmented Generation (RAG)", "BM25", "Adversarial Machine Learning", "Large Language Models (LLMs)", "Computer Vision", "High-Performance Computing (HPC)", "Statistical Process Control (SPC)", "Fractional Kelly Sizing", "Point-in-Time Backtesting", "Bayesian Modeling", "Algorithmic Trading", "Minimax Game Theory", "WebSockets", "PWA", "IndexedDB", "Agile/Scrum", "CI/CD", "Enterprise Architecture"
     ]
   },
 
@@ -224,28 +224,181 @@ export const portfolioData = {
 
   /**
    * Projects Showcase
-   * All 11 projects with fully comprehensive technical skills.
+   * Ordered with the strongest SWE, ML, and systems work first.
    */
   projects: [
     {
-      id: "orbit",
-      title: "Orbit",
-      subtitle: "Autonomous Multi-Agent Operating System",
-      badge: "xAI Grok Competition Winner",
+      id: "model-serve-k8s",
+      title: "Model Serve on Kubernetes",
+      subtitle: "FastAPI inference, probes, and CPU autoscaling",
+      badge: "ML Systems",
       featured: true,
-      description: "An autonomous multi-agent operating system engineered for university students. Won the xAI Grok competition by unifying academic, calendar, health, finance, career, travel, and campus-life workflows into a single natural language conversational interface.",
+      description: "A scikit-learn digits classifier served with FastAPI, built into a Docker image, and run on a local kind cluster with health probes, resource limits, and a HorizontalPodAutoscaler.",
       highlights: [
-        "Designed Orbit Core: a Grok Bot orchestration layer that routes natural-language requests across 11 specialized autonomous domain agents.",
-        "Built automated agent ingestion pipelines that parse Google Drive lecture materials to generate instant study flashcards, summaries, and interactive quizzes.",
-        "Synchronized dynamic study blocks directly onto live calendar systems with personalized budgeting, fitness routines, resume optimization, and travel planning."
+        "POST /predict accepts 1-256 images. GET /healthz, /readyz, and /metrics cover liveness, readiness, and counters. Eight pytest tests, and GitHub Actions runs the tests plus the Docker build.",
+        "Held-out eval job on 450 images, recorded 2026-10-22 on kind v0.24 / Kubernetes 1.31: 97.11% accuracy and 0.9711 macro-F1.",
+        "In-cluster load test (16 clients, 32-image batches, 150 s): 180,773 successful requests, ~1,205 req/s, latency p50 8.5 ms, p95 42.4 ms, p99 78.6 ms. HPA went from 1 replica to the cap of 5."
       ],
       technologies: [
-        "xAI Grok API", "Multi-Agent Systems", "Autonomous Agents", "LLMs", 
-        "Prompt Engineering", "Google Drive API", "Google Calendar API", "NLP", 
-        "Workflow Automation", "MCP"
+        "Python", "FastAPI", "Scikit-learn", "NumPy", "Pydantic", "Docker",
+        "Kubernetes", "pytest", "GitHub Actions", "Uvicorn"
       ],
-      githubUrl: "https://github.com/misty6g",
+      githubUrl: "https://github.com/misty6g/model-serve-k8s",
+      liveUrl: null
+    },
+    {
+      id: "agent-rag-observability",
+      title: "Agent RAG Observability",
+      subtitle: "Flask-docs QA with FAISS, BM25, and tracing",
+      badge: "RAG + Tracing",
+      featured: true,
+      description: "Retrieval-augmented QA over about 33k words of Flask documentation, with FAISS dense search, BM25, hybrid reciprocal-rank fusion, local Qwen generators, and OpenTelemetry spans per request.",
+      highlights: [
+        "On 30 questions, hybrid retrieval at 100-word chunks reached recall@5 0.967 and MRR@10 0.848. Hybrid matched or beat dense-only MRR at every published chunk size.",
+        "Qwen2.5-1.5B with hybrid-c200 scored 70.0% answer accuracy versus 43.3% for dense-c200. Doc-level hit@3 was 86.7% in both rows. Accuracy means the gold string appears as a whole token.",
+        "FastAPI exposes POST /ask and GET /healthz. Twelve pytest tests run without downloading a model. The README states this service was not deployed to Cloud Run."
+      ],
+      technologies: [
+        "Python", "FastAPI", "FAISS", "BM25", "sentence-transformers",
+        "Hugging Face Transformers", "PyTorch", "OpenTelemetry", "NumPy",
+        "pytest", "Retrieval-Augmented Generation (RAG)"
+      ],
+      githubUrl: "https://github.com/misty6g/agent-rag-observability",
+      liveUrl: null
+    },
+    {
+      id: "ai-redteam-harness",
+      title: "AI Red-Team Harness",
+      subtitle: "Prompt-injection eval and adversarial MNIST",
+      badge: "ML Security",
+      featured: true,
+      description: "Seeded harness that measures indirect prompt injection against a local Qwen2.5-1.5B tool-using agent, and FGSM/PGD robustness of a small PyTorch CNN on MNIST.",
+      highlights: [
+        "With no defense, attack success was 32/100. A tool-call allowlist and a detection pre-filter each recorded 0/100 on this suite. Spotlighting recorded 29/100. Overt injections succeeded 32/50. Subtle ones succeeded 0/50 on this model.",
+        "The standard CNN's clean accuracy was 95.65% and fell to 4.50% under PGD-10 at eps=0.2. One round of PGD adversarial training reached 62.30% robust accuracy at that epsilon, with clean accuracy 92.90%.",
+        "21 pytest tests. Runs use seed 1337 and greedy decoding. Every number above is taken from results/ in the repo."
+      ],
+      technologies: [
+        "Python", "PyTorch", "Hugging Face Transformers", "NumPy", "pytest",
+        "Adversarial Machine Learning", "GitHub Actions"
+      ],
+      githubUrl: "https://github.com/misty6g/ai-redteam-harness",
+      liveUrl: null
+    },
+    {
+      id: "partner-integration-kit",
+      title: "Partner Integration Kit",
+      subtitle: "Signed webhooks, generated SDKs, onboarding CLI",
+      badge: "Partner API",
+      featured: false,
+      description: "FastAPI partner API with hashed API keys, idempotent order writes, HMAC-signed webhooks, a dead-letter queue, OpenAPI-generated Python and TypeScript clients, and a BM25 help bot over the runbooks.",
+      highlights: [
+        "Measured 2026-10-06: 46 pytest tests passed, and Coverage.py reported 93% branch coverage on src/ (statements 1503, missed 70, branches 258, partial 41).",
+        "Webhook drill of 30 deliveries: 24 succeeded, 6 dead-lettered, 0 bad signatures, and 78 signature checks passed.",
+        "GET /v1/orders latency on SQLite: p50 30.322 ms, p95 63.363 ms (200 samples, concurrency 8, 0 errors). POST /v1/orders p95 93.588 ms. Help-bot top-1 and top-3 were 16/16 on the labeled set."
+      ],
+      technologies: [
+        "Python", "FastAPI", "SQLAlchemy", "SQLite", "Pydantic", "OpenAPI",
+        "TypeScript", "Redis", "Docker", "Docker Compose", "pytest", "BM25",
+        "GitHub Actions"
+      ],
+      githubUrl: "https://github.com/misty6g/partner-integration-kit",
+      liveUrl: null
+    },
+    {
+      id: "dnn-seq-lab",
+      title: "DNN Sequence Lab",
+      subtitle: "PyTorch sequence models on synthetic book data",
+      badge: "Deep Learning",
+      featured: false,
+      description: "A research loop on synthetic limit-order-book sessions: a known path-dependent label, a linear baseline, a TCN, an LSTM, and a transformer, with early stopping and held-out ranking metrics. The sessions are simulated.",
+      highlights: [
+        "Published seed-7 run, model chosen by validation AUC: TCN test AUC 0.789 (session-bootstrap 95% interval 0.759-0.818) and test Spearman IC 0.603. The linear baseline reached test AUC 0.737 and IC 0.501.",
+        "LSTM test AUC 0.788 with 30,769 parameters, against the TCN at 57,121 parameters. The transformer test AUC was 0.771.",
+        "pytest checks the no-look-ahead feature contract, AUC and IC, a forward pass of each architecture, and a one-epoch training smoke test."
+      ],
+      technologies: [
+        "Python", "PyTorch", "NumPy", "Pandas", "Matplotlib", "LSTM", "pytest"
+      ],
+      githubUrl: "https://github.com/misty6g/dnn-seq-lab",
+      liveUrl: null
+    },
+    {
+      id: "orbit",
+      title: "Orbit",
+      subtitle: "Multi-agent student OS on Nebius and Nemotron",
+      badge: "Live Demo",
+      featured: false,
+      description: "Personal student OS built for the Nebius x NVIDIA Global AI Hackathon. Orbit Core routes a turn across specialist domains, stores a per-user profile in Firestore, and asks before it writes to an external system.",
+      highlights: [
+        "Next.js and TypeScript app with Firebase Auth (email and Google). Nebius and Tavily keys can be pasted in the app, and the Vercel host can supply defaults.",
+        "Orbit Core calls NVIDIA Nemotron on Nebius Token Factory to choose specialist planets and a Nano, Super, or Ultra response tier.",
+        "Specialists cover schedule, study, health, wallet, career, travel, and local search. The home view is a Three.js solar system. Live at orbit-nebius-hackathon.vercel.app."
+      ],
+      technologies: [
+        "TypeScript", "Next.js", "React", "Three.js", "Firebase", "Firestore",
+        "Tailwind CSS", "NVIDIA Nemotron", "Nebius Token Factory",
+        "Multi-Agent Systems", "Vercel"
+      ],
+      githubUrl: "https://github.com/misty6g/orbit-nebius-hackathon",
       linkedinPostUrl: "https://lnkd.in/p/gpJiiM-x",
+      liveUrl: "https://orbit-nebius-hackathon.vercel.app"
+    },
+    {
+      id: "kalshi-quant",
+      title: "Kalshi Quant & Betting Agent",
+      subtitle: "Python and Rust prediction-market agent",
+      badge: "Quant Trading System",
+      featured: false,
+      description: "Kalshi trading agent that estimates event probabilities with Perplexity Sonar and Octagon, compares them with market odds, and can paper-trade, dry-run, or place live orders behind a risk manager.",
+      highlights: [
+        "Python loop covers market discovery, a weighted ensemble of the two research estimates, an edge check, a kill switch, and a Flask dashboard.",
+        "Rust crates implement strategy, risk limits, execution, and snapshot backtests. Position size uses fractional Kelly and is capped by the risk limits. PyO3 exposes that core to Python.",
+        "Paper mode simulates a $1,000 portfolio. Dry-run logs the orders it would send. Live mode can target the Kalshi demo environment. The API client signs requests with RSA."
+      ],
+      technologies: [
+        "Python", "Rust", "PyO3", "Flask", "Fractional Kelly Sizing",
+        "Point-in-Time Backtesting", "Algorithmic Trading", "REST APIs"
+      ],
+      githubUrl: "https://github.com/misty6g/kalshi-perplexity-betting-agent",
+      liveUrl: null
+    },
+    {
+      id: "xbaw-fab-ops",
+      title: "XBAW Fab Ops",
+      subtitle: "Synthetic fab line with yield and SPC",
+      badge: "Manufacturing Software",
+      featured: false,
+      description: "MES-lite demo for a fictional RF bulk-acoustic-wave filter line. It ingests SECS/GEM-inspired JSON tool events into SQL and reports die yield, line yield, scrap, throughput, and an individuals-style SPC chart.",
+      highlights: [
+        "FastAPI ingest treats a repeated event id as a no-op. Docker Compose runs Postgres. Local runs and tests use SQLite. The dashboard is React and TypeScript.",
+        "pytest covers the KPI math: die yield, line yield, wafer scrap, throughput, step yield, utilization, and Cp/Cpk. SPC limits are mean plus or minus 3 sample standard deviations.",
+        "Harborline RF Line 2, its recipes, and its history are synthetic. The README says the project is not affiliated with a real fab."
+      ],
+      technologies: [
+        "Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "SQLite", "Pydantic",
+        "React", "TypeScript", "Docker", "Docker Compose", "pytest",
+        "Statistical Process Control (SPC)", "GitHub Actions"
+      ],
+      githubUrl: "https://github.com/misty6g/xbaw-fab-ops",
+      liveUrl: null
+    },
+    {
+      id: "cuda-kernel-lab",
+      title: "CUDA Kernel Lab",
+      subtitle: "SAXPY, reductions, and tiled GEMM",
+      badge: "High Performance Computing",
+      featured: false,
+      description: "CUDA and C++ microbenchmarks for STREAM-style copy, SAXPY, a shared-memory reduction, and naive versus 16x16 tiled GEMM. Each device kernel is checked against a CPU reference. CI builds the host path because GitHub Actions has no GPU.",
+      highlights: [
+        "Tiled GEMM stages 16x16 panels in shared memory. The host implementation uses the same tile algorithm, including shapes that are not multiples of 16.",
+        "The reduction is a shared-memory tree with __syncthreads, then a host finish of the partials.",
+        "Copy, SAXPY, and the reduction report GB/s. GEMM reports GFLOPS. Those rates move with the machine."
+      ],
+      technologies: [
+        "CUDA", "C++", "C", "High-Performance Computing (HPC)", "CMake", "GitHub Actions"
+      ],
+      githubUrl: "https://github.com/misty6g/cuda-kernel-lab",
       liveUrl: null
     },
     {
@@ -253,7 +406,7 @@ export const portfolioData = {
       title: "ASL Study Tool",
       subtitle: "Full-Stack Web Application with In-Browser Computer Vision",
       badge: "Live Production App",
-      featured: true,
+      featured: false,
       description: "Interactive American Sign Language learning platform featuring real-time client-side computer vision that scores hand landmark geometry live through the user's webcam without server latency.",
       highlights: [
         "Engineered 9 core sign decks with 140+ animated flashcards utilizing 3D CSS perspective flips, video streaming, and responsive deck navigation.",
@@ -261,74 +414,140 @@ export const portfolioData = {
         "Built a timed quiz mode with fuzzy slash-variant answer validation, synthesized Web Audio sound feedback, and automated reinforcement queues for missed signs."
       ],
       technologies: [
-        "React 19", "TypeScript", "JavaScript", "Node.js", "Express", "PostgreSQL", 
-        "Supabase", "Google MediaPipe Tasks Vision", "Computer Vision", "Landmark Geometry", 
-        "Webcam Video Streaming", "3D CSS Transforms", "Web Audio API", "Fuzzy String Matching", 
+        "React 19", "TypeScript", "JavaScript", "Node.js", "Express", "PostgreSQL",
+        "Supabase", "Google MediaPipe Tasks Vision", "Computer Vision", "Landmark Geometry",
+        "Webcam Video Streaming", "3D CSS Transforms", "Web Audio API", "Fuzzy String Matching",
         "Spaced Repetition", "Vercel", "Render", "Full-Stack Architecture", "REST APIs"
       ],
       githubUrl: "https://github.com/misty6g/ASL-Study-Tool",
-      liveUrl: "https://asl-study-tool-kqbn-one.vercel.app/"
+      liveUrl: "https://asl-study-tool-theta.vercel.app"
     },
     {
-      id: "kalshi-quant",
-      title: "Kalshi Quant & Betting Agent",
-      subtitle: "Polyglot Prediction Market Research & Execution Engine",
-      badge: "Quant Trading System",
-      featured: true,
-      description: "A point-in-time-correct quantitative research and automated execution engine for binary prediction-market contracts on Kalshi, exploiting pricing inefficiencies in weather and niche political event contracts.",
+      id: "volleyball-lineup-sheet",
+      title: "Rotation Board",
+      subtitle: "Offline volleyball lineup PWA",
+      badge: "Live Demo",
+      featured: false,
+      description: "Mobile-first lineup manager for RIT Men's Volleyball. It builds serve-receive lineups, rotates on side-out, and applies libero swaps and planned subs. All match state stays in the browser.",
       highlights: [
-        "Constructed a high-throughput polyglot Python and Rust architecture with PyO3 bindings for zero-overhead hot-path computational execution.",
-        "Implemented a Bayesian Gaussian pricer with bias-corrected ensemble forecasts and fractional-Kelly position sizing with fee-adjusted edge gating.",
-        "Engineered point-in-time data backtesting pipelines utilizing Polars, PyArrow, and TimescaleDB with property-based test suites using Hypothesis and pytest."
+        "Next.js and TypeScript. The rotation engine lives in src/domain with Zod validation. Zustand stores undo as court snapshots.",
+        "Dexie writes lineups to IndexedDB. A service worker caches the app shell so the board still opens in a gym with no network.",
+        "Vitest covers the domain logic. Playwright covers the flows. Live at volleyball-lineup-sheet.vercel.app."
       ],
       technologies: [
-        "Python", "Rust", "PyO3", "Polars", "PyArrow", "TimescaleDB", "PostgreSQL", 
-        "Docker", "pytest", "Hypothesis", "Bayesian Gaussian Pricing", "Ensemble Forecasting", 
-        "Fractional-Kelly Sizing", "Point-in-Time Backtesting", "Prediction Markets", 
-        "High-Performance Systems", "Quantitative Trading", "Risk Gating"
+        "TypeScript", "Next.js", "React", "Tailwind CSS", "Zustand", "IndexedDB",
+        "Playwright", "Vitest", "PWA"
       ],
-      githubUrl: "https://github.com/misty6g/kalshi-perplexity-betting-agent",
+      githubUrl: "https://github.com/misty6g/volleyball-lineup-sheet",
+      liveUrl: "https://volleyball-lineup-sheet.vercel.app"
+    },
+    {
+      id: "thrift-swipe",
+      title: "Thrift Swipe",
+      subtitle: "Expo marketplace with a swipe deck and checkout",
+      badge: "React Native",
+      featured: false,
+      description: "React Native and Expo app for secondhand clothing. A swipe deck, multi-seller cart, and simulated checkout sit on Supabase, with a deterministic ranking function for the feed.",
+      highlights: [
+        "Gesture Handler and Reanimated drive the deck. Swipe right carts the item, swipe left records a pass, and undo restores the last action.",
+        "Supabase provides Auth, Postgres, row-level security, and a checkout RPC. With empty env vars the app runs a demo catalog the README describes as 14 sellers and 105+ listings.",
+        "src/lib/ranking.ts scores the feed with category +30, size +25, price fit +20, plus tag, brand, and freshness terms."
+      ],
+      technologies: [
+        "TypeScript", "React Native", "Expo", "Supabase", "PostgreSQL",
+        "TanStack Query", "Jest"
+      ],
+      githubUrl: "https://github.com/misty6g/thrift-swipe",
+      liveUrl: null
+    },
+    {
+      id: "volleyball-film-editor",
+      title: "Rally Cut",
+      subtitle: "Volleyball film trimmer from court motion",
+      badge: "Computer Vision",
+      featured: false,
+      description: "Finds volleyball rallies in a game film or a YouTube link, drops the standing-around time between serves, and exports a trimmed cut after a manual segment review.",
+      highlights: [
+        "Scores spatial residual motion inside a court ROI after estimating camera translation. An optional OpenCV HOG person prior weights the motion, and serve-toss detection can snap the lead-in.",
+        "The Gradio UI edits keep-segments. ffmpeg writes the export. yt-dlp downloads URL inputs.",
+        "pytest covers detection, download, and the pipeline."
+      ],
+      technologies: [
+        "Python", "OpenCV", "NumPy", "Gradio", "ffmpeg", "pytest", "Computer Vision"
+      ],
+      githubUrl: "https://github.com/misty6g/volleyball-film-editor",
+      liveUrl: null
+    },
+    {
+      id: "gridiron-market-lab",
+      title: "Gridiron Market Lab",
+      subtitle: "Point-in-time NFL odds research harness",
+      badge: "Sports Analytics",
+      featured: false,
+      description: "Offline NFL odds sandbox. It joins the latest pre-kickoff line to each game, runs a pluggable signal, and settles unit bets with American-odds math. The sample data is synthetic.",
+      highlights: [
+        "The point-in-time join uses the latest odds as of a decision time and never a line from after kickoff. pytest covers that look-ahead guard.",
+        "Strategies in the repo are closing_line_value and rest_form. Reports include hit rate, total PnL, and Brier score.",
+        "The CLI is standard-library Python. No API keys are required."
+      ],
+      technologies: [
+        "Python", "pytest", "Point-in-Time Backtesting", "Algorithmic Trading"
+      ],
+      githubUrl: "https://github.com/misty6g/gridiron-market-lab",
       liveUrl: null
     },
     {
       id: "lane-assist-lite",
       title: "Lane Assist Lite",
-      subtitle: "Vehicle Perception & Lane Departure Warning System",
+      subtitle: "OpenCV lane detection and offset estimate",
       badge: "Computer Vision",
       featured: false,
-      description: "Lightweight vehicle perception and real-time lane assist demo built for automotive vision and autonomous driving systems.",
+      description: "CPU-only lane perception demo. It finds lane markings in a still or a dashcam clip, estimates lateral offset in the image plane, and writes an annotated frame plus a JSON report.",
       highlights: [
-        "Developed edge-detection and perspective transform pipelines in Python with OpenCV to detect lane boundaries on dashcam video streams in real time.",
-        "Computed road curvature and vehicle lateral offset from lane center with warning thresholds for simulated driver alerts.",
-        "Optimized frame processing throughput for low-latency inference on constrained CPU environments."
+        "Pipeline: blur, Canny edges, a yellow and white HLS prior, a perspective ROI, probabilistic Hough segments, then a slope-intercept fit.",
+        "Offset at the bottom of the ROI is image center minus lane center. The README defines positive as right of center.",
+        "GitHub Actions runs pytest on Python 3.11 and 3.12 with opencv-python-headless."
       ],
       technologies: [
-        "Python", "OpenCV", "Computer Vision", "NumPy", "Canny Edge Detection", 
-        "Hough Line Transform", "Perspective Transform", "Bird's-Eye View Mapping", 
-        "Lane Departure Warning", "Real-Time Video Processing", "Autonomous Vehicle Perception"
+        "Python", "OpenCV", "NumPy", "Computer Vision", "pytest", "GitHub Actions"
       ],
       githubUrl: "https://github.com/misty6g/lane-assist-lite",
       liveUrl: null
     },
     {
-      id: "cuda-kernel-lab",
-      title: "CUDA Kernel Lab",
-      subtitle: "GPU Systems & Parallel Microbenchmarking",
-      badge: "High Performance Computing",
+      id: "anime-frame-search",
+      title: "Anime Frame Search",
+      subtitle: "Cosine search over frame embeddings",
+      badge: "Visual Search",
       featured: false,
-      description: "CUDA and C++ microbenchmarks and optimized GPU kernels targeting matrix multiplication, parallel reductions, and memory bandwidth.",
+      description: "Visual search over short anime-style frames. A pluggable embedder builds a NumPy matrix, and queries rank frames by cosine similarity through FastAPI and a small browser UI.",
       highlights: [
-        "Engineered tiled matrix multiplication kernels leveraging GPU shared memory and memory coalescing to maximize arithmetic intensity.",
-        "Wrote warp-level parallel reduction kernels and memory bandwidth stress tests to profile memory bus saturation on NVIDIA architectures.",
-        "Benchmarked throughput and latency improvements against baseline naive implementations."
+        "The default HashEmbedder needs no model download. Image and caption vectors are fused, L2-normalized, and stored with np.savez_compressed.",
+        "pytest runs with AFS_EMBEDDER=hash. The embedder module also describes an optional sentence-transformers CLIP backend, commented out of the default requirements.",
+        "Queries rank that NumPy matrix by cosine similarity."
       ],
       technologies: [
-        "CUDA", "C++", "C", "GPU Computing", "Shared Memory Tiling", "Memory Coalescing", 
-        "Warp Shuffles", "Parallel Reductions", "Matrix Multiplication (GEMM)", 
-        "Memory Bandwidth Profiling", "Parallel Algorithms", "High Performance Computing (HPC)", 
-        "NVIDIA Architectures"
+        "Python", "FastAPI", "NumPy", "Pydantic", "pytest"
       ],
-      githubUrl: "https://github.com/misty6g/cuda-kernel-lab",
+      githubUrl: "https://github.com/misty6g/anime-frame-search",
+      liveUrl: null
+    },
+    {
+      id: "finc-425-tick-api",
+      title: "FINC 425 Tick Data API",
+      subtitle: "Futures order book and limit-flow reader",
+      badge: "Coursework",
+      featured: false,
+      description: "Course code that reads 2018 futures tick files from HDF5 into pandas. It exposes the order book, trades, weighted book balance, and limit flows for Treasury and equity-index symbols, including ZT.",
+      highlights: [
+        "load_h5 opens a day's foreground.h5 file and checks that book columns share one append number.",
+        "Implemented views include get_order_book, weighted book balance, trades, and limit flows between two timestamps, plus a matplotlib plot of the book.",
+        "Symbols in the loader include ZT, ZF, ZN, ZB, UB, TN, and ES, each with a tick size."
+      ],
+      technologies: [
+        "Python", "Pandas", "Matplotlib", "HDF5", "Algorithmic Trading"
+      ],
+      githubUrl: "https://github.com/misty6g/FINC-425-stock-market-algorithmic-trading",
       liveUrl: null
     },
     {
@@ -352,67 +571,6 @@ export const portfolioData = {
       liveUrl: null
     },
     {
-      id: "anime-frame-search",
-      title: "Anime Frame Search",
-      subtitle: "Multimodal Visual Search with Embeddings & Vector Ranking",
-      badge: "Multimodal AI Search",
-      featured: false,
-      description: "Multimodal search engine indexing video frames and short clips using deep visual embeddings to retrieve exact anime scenes from image queries.",
-      highlights: [
-        "Generated deep feature embeddings for video frames using PyTorch vision transformers.",
-        "Implemented high-dimensional nearest-neighbor vector similarity search with FAISS for sub-100ms scene retrieval.",
-        "Built ranking heuristics to deduplicate contiguous frames and surface top matching episode timestamps."
-      ],
-      technologies: [
-        "Python", "PyTorch", "FAISS", "Vector Search", "Vision Transformers (ViT)", 
-        "Image Embeddings", "Multimodal AI", "Cosine Similarity", "Nearest Neighbor Search", 
-        "Frame Extraction", "Ranking Algorithms", "Deep Learning"
-      ],
-      githubUrl: "https://github.com/misty6g/anime-frame-search",
-      liveUrl: null
-    },
-    {
-      id: "gridiron-market-lab",
-      title: "Gridiron Market Lab (NFL Prediction Pipeline)",
-      subtitle: "Sports Market Signal Research & Quantitative Modeling",
-      badge: "Sports Analytics & ML",
-      featured: false,
-      description: "Point-in-time NFL sports-market signal research toolkit equipped with state-space filtering, look-ahead guards, and gradient-boosted outcome forecasting.",
-      highlights: [
-        "Implemented Kalman filters to isolate true consensus market movement from transient speculative betting noise.",
-        "Trained and backtested XGBoost models across multi-season feature sets with strict point-in-time look-ahead validation.",
-        "Evaluated spread coverage predictive edges against historical Vegas opening and closing lines."
-      ],
-      technologies: [
-        "Python", "XGBoost", "Kalman Filtering", "State-Space Models", "Pandas", 
-        "NumPy", "Scikit-learn", "Sports Analytics", "Market Signal Processing", 
-        "Point-in-Time Backtesting", "Look-Ahead Guards", "Feature Engineering", 
-        "Binary Classification", "Expected Value Modeling"
-      ],
-      githubUrl: "https://github.com/misty6g/gridiron-market-lab",
-      liveUrl: null
-    },
-    {
-      id: "thrift-swipe",
-      title: "Thrift Swipe",
-      subtitle: "Curated Fashion Discovery & Preference Learning App",
-      badge: "Mobile Web App",
-      featured: false,
-      description: "Curated fashion discovery web application featuring gesture-based card swiping and recommendation scoring to learn user stylistic preferences.",
-      highlights: [
-        "Engineered smooth touch gesture card swiping with CSS transforms and touch event handling in TypeScript.",
-        "Implemented dynamic preference scoring that weights garment attributes based on user swipe interactions.",
-        "Organized product feeds with responsive mobile-first UI tailored for fast discovery."
-      ],
-      technologies: [
-        "TypeScript", "React", "CSS Transforms", "Touch Gestures", "Mobile-First UI", 
-        "Recommendation Algorithms", "Collaborative Filtering Heuristics", "User Preference Modeling", 
-        "Responsive Web Design"
-      ],
-      githubUrl: "https://github.com/misty6g/thrift-swipe",
-      liveUrl: null
-    },
-    {
       id: "mancala-move-calculator",
       title: "Mancala Move Calculator",
       subtitle: "Game Engine & Minimax Strategy Evaluation",
@@ -425,11 +583,27 @@ export const portfolioData = {
         "Created an interactive visual board state interface allowing users to test hypothetical game positions."
       ],
       technologies: [
-        "JavaScript", "Minimax Algorithm", "Alpha-Beta Pruning", "Game Theory", 
-        "Tree Traversal", "Heuristic Evaluation Functions", "State Evaluation", 
-        "Algorithmic Optimization", "Data Structures"
+        "JavaScript", "Node.js", "Express", "Minimax Game Theory", "Alpha-Beta Pruning"
       ],
       githubUrl: "https://github.com/misty6g/mancala-move-calculator",
+      liveUrl: null
+    },
+    {
+      id: "ti84-rng-programs",
+      title: "TI-84 RNG Toolkit",
+      subtitle: "MATH 301 generators and samplers",
+      badge: "Numerical Methods",
+      featured: false,
+      description: "Menu-driven TI-BASIC program for a TI-84 Plus. It runs congruential generators, period checks, inverse-transform samplers, accept-reject, and a linear-feedback shift register, then returns to the menu.",
+      highlights: [
+        "RNG tools: LCG sequences, Hull-Dobell full-period checks, Carmichael lambda, modular inverse, Kolmogorov-Smirnov uniforms, and LFSR period.",
+        "Sampling tools: inverse transform for a general PMF, accept-reject, Poisson and binomial inversion, and alias-method setup.",
+        "Source is src/MATH301.txt. build.py packs bin/MATH301.8xp with the tivars library. Results are displayed and not saved."
+      ],
+      technologies: [
+        "TI-BASIC", "Python"
+      ],
+      githubUrl: "https://github.com/misty6g/ti84-rng-programs",
       liveUrl: null
     },
     {

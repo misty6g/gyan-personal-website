@@ -20,7 +20,7 @@ export default function Projects({
       <div className="section-header">
         <div>
           <h2 className="section-title">Projects & Open Source</h2>
-          <p className="section-subtitle">Multi-agent systems, computer vision, quant trading, and systems kernels</p>
+          <p className="section-subtitle">ML systems, Kubernetes serving, retrieval, partner APIs, and quant research</p>
         </div>
       </div>
 
