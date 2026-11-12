@@ -1,22 +1,21 @@
-# Gyan Mistry - Recruiter Portfolio Website
+# Gyan Mistry - Portfolio Website
 
-A fast, barebones, modern developer portfolio website designed specifically for tech recruiters and hiring managers. Features an interactive technology search engine, complete LinkedIn work experience, award-winning GitHub projects, RIT coursework list, and one-click resume access.
+A playful, animated developer portfolio built around a volleyball court. Skills drop into the hero as physics objects you can spike with a ball, and the rest of the page covers experience, projects, and coursework for recruiters and hiring managers.
 
 ## Features
 
-- **⚡ Recruiter Technology Search**: Type any skill or language (e.g. `Python`, `Rust`, `React`, `Docker`, `Tableau`, `MediaPipe`, `SQL`) to instantly see where it was used, with real-time match counters, accent glow spotlights, and quick-jump navigation.
-- **🛡️ Recruiter Fast-Facts Snapshot**: Highlights active U.S. DoD Secret Clearance, '27 Summer internship goal, RIT Presidential Scholar honors, and first graduate of RIT's BS in AI program.
-- **📄 Resume Integration**: Direct one-click download of `Gyan_Mistry_Resume_9262.pdf` and an embedded in-browser preview modal.
-- **💼 Complete Work Experience**: Detailed impact metrics and bullet points from Lockheed Martin (F-16 IFG team), Redis (Cloud Operations R&D), RIT athletics/mentorship, and youth leadership with clean top-two default view.
-- **🚀 Featured Projects**:
-  - **Orbit**: Autonomous Multi-Agent OS (xAI Grok Competition Winner, with LinkedIn announcement link)
-  - **ASL Study Tool**: Full-stack web app with real-time MediaPipe computer vision (Live on Vercel: https://asl-study-tool-kqbn-one.vercel.app/)
-  - **Kalshi Quant & Betting Agent**: High-throughput polyglot Python + Rust prediction market execution engine
-  - Plus 8 more open-source repositories from GitHub (Lane Assist Lite, CUDA Kernel Lab, Spike Rally, Anime Frame Search, Gridiron Market Lab, Thrift Swipe, Mancala Move Calculator, Clash Royale Bot).
-- **📚 Coursework & Class List**: Full catalog of 32 RIT courses with official descriptions and extrapolated technical skills, with top 8 flagship courses shown by default.
-- **🌐 Social Hub**: LinkedIn, GitHub, Twitter / X, Spotify, Email, and Live ASL Web App.
-- **🌓 Dark & Light Mode**: Minimalist high-contrast developer theme persisted in `localStorage`.
-- **📱 Responsive Mobile Navigation**: Built with full mobile drawer navigation and touch targets >= 44px.
+- **🏐 Physics court hero**: A matter-js world where skill pills fall onto a court. Drag the ball, or tap the court to spike it. Loaded lazily after first paint, paused when off-screen, and rendered as one static frame for reduced-motion users.
+- **⌘ Command palette search**: Press `Cmd K`, `Ctrl K`, or `/` (or click any skill chip) to search every technology across experience, projects, and coursework, then jump straight to the match.
+- **📈 Scroll-driven experience timeline**: A rally line fills as you scroll Lockheed Martin and Redis, with animated impact metrics.
+- **🚀 Featured project reel**: Orbit, ASL Study Tool, and Kalshi Quant scroll horizontally on large screens and stack on phones. Eight more projects live in an expandable index.
+- **🧩 About bento, credentials, and coursework tabs**: Volleyball captaincy, languages including ASL, skills groups, and all 32 RIT courses by category.
+- **📄 Resume viewer**: Preview `public/resume.pdf` in a modal or download it.
+- **🌓 Light and dark themes**: Follows the system setting, with a toggle that reveals the new theme as a circle (View Transitions API).
+- **♿ Accessible by default**: WCAG AA contrast in both themes, 44px touch targets, visible focus, skip link, and full `prefers-reduced-motion` support.
+
+Stack: React 18, Vite, plain CSS tokens in `src/index.css`, Motion, matter-js, Lenis, Phosphor icons, and self-hosted Bricolage Grotesque and Geist fonts.
+
+Hero skill pills come from `portfolioData.personal.heroSkills`. Featured project images live in `public/img/` and are referenced by each project's `image` field.
 
 ---
 
