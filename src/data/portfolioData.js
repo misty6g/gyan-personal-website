@@ -25,7 +25,11 @@ export const portfolioData = {
     resumePdfUrl: "/resume.pdf",
     avatarUrl: "/gyan.jpg",
     about: [
-      "AI & Software Engineering student at RIT building high-performance distributed systems, ML pipelines, and autonomous agent infrastructure."
+      "AI student at RIT building agent systems, ML pipelines, and trading engines. Captain of RIT men's club volleyball."
+    ],
+    heroSkills: [
+      "Python", "Rust", "PyTorch", "TypeScript", "React", "C++", "CUDA", "Docker",
+      "Multi-agent systems", "Computer vision", "SQL", "Redis", "OpenCV", "Kalman filters", "MediaPipe", "FAISS"
     ],
     fullBio: [
       "I am an Artificial Intelligence undergraduate at RIT (Presidential Scholar, Dean's List) with minors in Software Engineering, Applied Statistics, and Math. I am on track to be the first graduate of RIT's Artificial Intelligence degree program.",
@@ -126,6 +130,10 @@ export const portfolioData = {
         }
       ],
       tagline: "F-16 IFG Team / ACA Bay / DoD Secret Clearance",
+      metrics: [
+        { value: 80, suffix: "%", label: "accuracy target hit converting F-16 Technical Orders from SGML to XML" },
+        { value: 0, suffix: "", label: "tickets lost migrating Microsoft Planner to Jira" }
+      ],
       bullets: [
         "Embedded with the F-16 Integrated Fighter Group (IFG) team in an ACA bay, operating under an active U.S. Department of Defense Secret security clearance.",
         "Engineered AI agents and automated conversion scripts to transform F-16 Technical Orders (TOs) from SGML to XML, hitting an 80% automated accuracy target.",
@@ -151,6 +159,11 @@ export const portfolioData = {
         }
       ],
       tagline: "Cloud Operations / Production ETL & Automation Pipelines",
+      metrics: [
+        { value: 4000, suffix: "+", label: "support and incident tickets run through Python pipelines" },
+        { value: 95, suffix: "%", label: "less time spent categorizing tickets by hand" },
+        { text: "4h to 3m", label: "weekly executive reporting prep" }
+      ],
       bullets: [
         "Built Python automation pipelines integrated with REST APIs (Glean, Jira, Squadcast) to process 4,000+ support and incident tickets.",
         "Cut manual categorization time by 95% and improved ticket labeling accuracy +70% compared to manual baseline (validated by a 300-ticket spot-check).",
@@ -229,6 +242,8 @@ export const portfolioData = {
   projects: [
     {
       id: "orbit",
+      image: "/img/project-orbit.jpg",
+      imageAlt: "Abstract render of eleven agent nodes orbiting a central core",
       title: "Orbit",
       subtitle: "Autonomous Multi-Agent Operating System",
       badge: "xAI Grok Competition Winner",
@@ -250,6 +265,9 @@ export const portfolioData = {
     },
     {
       id: "asl-study-tool",
+      image: "/img/project-asl.jpg",
+      imageAlt: "ASL Study Tool dashboard with a live hand sign demo for the letter W",
+      imagePosition: "0% 0%",
       title: "ASL Study Tool",
       subtitle: "Full-Stack Web Application with In-Browser Computer Vision",
       badge: "Live Production App",
@@ -271,6 +289,8 @@ export const portfolioData = {
     },
     {
       id: "kalshi-quant",
+      image: "/img/project-kalshi.jpg",
+      imageAlt: "Abstract render of prediction market price curves and probability bands",
       title: "Kalshi Quant & Betting Agent",
       subtitle: "Polyglot Prediction Market Research & Execution Engine",
       badge: "Quant Trading System",

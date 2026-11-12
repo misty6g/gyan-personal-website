@@ -1,189 +1,164 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
+import { LazyMotion } from 'motion/react';
 import { portfolioData } from './data/portfolioData';
 import Header from './components/Header';
-import RecruiterSearch from './components/RecruiterSearch';
-import Hero from './components/Hero';
-import Experience from './components/Experience';
-import Projects from './components/Projects';
-import Coursework from './components/Coursework';
-import SkillsMatrix from './components/SkillsMatrix';
-import Education from './components/Education';
-import Extracurriculars from './components/Extracurriculars';
-import ResumeModal from './components/ResumeModal';
+import CourtHero from './components/CourtHero';
+import Marquee from './components/Marquee';
+import RallyTimeline from './components/RallyTimeline';
+import ProjectReel from './components/ProjectReel';
+import ProjectIndex from './components/ProjectIndex';
+import AboutBento from './components/AboutBento';
+import Credentials from './components/Credentials';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CommandPalette from './components/CommandPalette';
+import ResumeModal from './components/ResumeModal';
+import { destroySmoothScroll, initSmoothScroll, scrollToY } from './lib/smoothScroll';
+
+const NAV_OFFSET = 110;
+const loadMotionFeatures = () => import('./lib/motionFeatures').then((mod) => mod.default);
+
+function flash(el) {
+  el.classList.remove('is-flash');
+  void el.offsetWidth;
+  el.classList.add('is-flash');
+  setTimeout(() => el.classList.remove('is-flash'), 1900);
+}
 
 export default function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('gyan_theme') || 'dark';
-  });
-  const [searchQuery, setSearchQuery] = useState('');
+  const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'light');
+  const [palette, setPalette] = useState({ open: false, query: '' });
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState(null);
+  const [revealId, setRevealId] = useState(null);
+  const [status, setStatus] = useState('');
+  const statusTimer = useRef(null);
 
-  // Sync theme with document root attribute & localStorage
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('gyan_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  useEffect(() => {
+    initSmoothScroll();
+    return () => destroySmoothScroll();
+  }, []);
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
+  const openSearch = useCallback((query = '') => setPalette({ open: true, query }), []);
+  const closeSearch = useCallback(() => setPalette((p) => ({ ...p, open: false })), []);
+  const closeResume = useCallback(() => setIsResumeOpen(false), []);
 
-  // Recruiter Search matching engine
-  const matches = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) {
-      return {
-        projects: [],
-        experiences: [],
-        courses: [],
-        matchingProjectIds: new Set(),
-        matchingExperienceIds: new Set(),
-        matchingCourseIds: new Set()
-      };
-    }
-
-    const matchedProjects = portfolioData.projects.filter((p) => {
-      const techMatch = p.technologies.some((t) => t.toLowerCase().includes(q));
-      const textMatch = p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-      return techMatch || textMatch;
-    });
-
-    const matchedExperiences = portfolioData.experiences.filter((e) => {
-      const techMatch = e.technologies.some((t) => t.toLowerCase().includes(q));
-      const companyMatch = e.company.toLowerCase().includes(q);
-      const bulletMatch = e.bullets.some((b) => b.toLowerCase().includes(q));
-      return techMatch || companyMatch || bulletMatch;
-    });
-
-    const matchedCourses = portfolioData.coursework.filter((c) => {
-      const techMatch = c.technologies.some((t) => t.toLowerCase().includes(q));
-      const titleMatch = c.title.toLowerCase().includes(q) || c.code.toLowerCase().includes(q);
-      return techMatch || titleMatch;
-    });
-
-    return {
-      projects: matchedProjects,
-      experiences: matchedExperiences,
-      courses: matchedCourses,
-      matchingProjectIds: new Set(matchedProjects.map((p) => p.id)),
-      matchingExperienceIds: new Set(matchedExperiences.map((e) => e.id)),
-      matchingCourseIds: new Set(matchedCourses.map((c) => c.id))
+  useEffect(() => {
+    const onKey = (e) => {
+      const typing = /input|textarea|select/i.test(document.activeElement?.tagName || '');
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setPalette((p) => ({ open: !p.open, query: '' }));
+      } else if (e.key === '/' && !typing) {
+        e.preventDefault();
+        openSearch('');
+      }
     };
-  }, [searchQuery]);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [openSearch]);
 
-  // Jump to specific item and momentarily pulse it
-  const handleJumpToItem = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.classList.add('is-matched');
-      setTimeout(() => {
-        // Keep matched if still part of query, or re-evaluate
-      }, 2000);
+  const toggleTheme = (event) => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) {
+      setTheme(next);
+      return;
     }
+    const rect = event?.currentTarget?.getBoundingClientRect();
+    const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y = rect ? rect.top + rect.height / 2 : 0;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const transition = document.startViewTransition(() => {
+      flushSync(() => setTheme(next));
+    });
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
   };
 
-  const handleSelectTag = (tag) => {
-    setSearchQuery(tag);
-    // Smooth scroll up toward search container if needed, or trigger matches
-    const searchElem = document.querySelector('.search-container');
-    if (searchElem && window.scrollY > 400) {
-      searchElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const announce = useCallback((msg) => {
+    setStatus(msg);
+    clearTimeout(statusTimer.current);
+    statusTimer.current = setTimeout(() => setStatus(''), 3000);
+  }, []);
+
+  const jumpTo = useCallback((id) => {
+    setRevealId(id);
+    // Wait for tabs or accordions to open the target before measuring it.
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const reel = document.getElementById('projects');
+      const reelCards = reel ? [...reel.querySelectorAll('.reel-card')] : [];
+      const reelIndex = reelCards.indexOf(el);
+
+      let y;
+      if (reel && reelIndex >= 0 && reel.dataset.horizontal === 'true') {
+        const span = reel.offsetHeight - window.innerHeight;
+        const steps = Math.max(reelCards.length - 1, 1);
+        y = reel.getBoundingClientRect().top + window.scrollY + (span * reelIndex) / steps;
+      } else {
+        y = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+      }
+      scrollToY(Math.max(y, 0));
+      setTimeout(() => flash(el), 650);
+    }, 120);
+  }, []);
+
+  const { personal, experiences, projects, extracurriculars, socials } = portfolioData;
 
   return (
-    <div className="app-layout">
-      <Header 
-        theme={theme} 
-        toggleTheme={toggleTheme} 
-        onOpenResume={() => setIsResumeOpen(true)} 
-      />
-
-      <main className="container">
-        {/* Recruiter Skill / Technology Finder Bar */}
-        <RecruiterSearch
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          matches={matches}
-          onJumpToItem={handleJumpToItem}
-        />
-
-        {/* Hero & Fast-Facts Snapshot */}
-        <Hero
-          personal={portfolioData.personal}
-          badges={portfolioData.badges}
-          socials={portfolioData.socials}
+    <LazyMotion features={loadMotionFeatures} strict>
+      <div className="app-layout">
+        <a className="skip-link" href="#main">Skip to content</a>
+        <Header
+          theme={theme}
+          toggleTheme={toggleTheme}
           onOpenResume={() => setIsResumeOpen(true)}
-          onShowToast={showToast}
+          onOpenSearch={openSearch}
+          searchOpen={palette.open}
         />
 
-        {/* Work Experience */}
-        <Experience
-          experiences={portfolioData.experiences}
-          matchingExperienceIds={matches.matchingExperienceIds}
-          searchQuery={searchQuery}
-          onSelectTag={handleSelectTag}
+        <main id="main">
+          <CourtHero personal={personal} onOpenResume={() => setIsResumeOpen(true)} onCopied={announce} />
+          <Marquee items={portfolioData.badges.map((b) => b.label)} />
+          <RallyTimeline experiences={experiences} onSelectTag={openSearch} />
+          <ProjectReel projects={projects} onSelectTag={openSearch} />
+          <ProjectIndex projects={projects} onSelectTag={openSearch} revealId={revealId} />
+          <AboutBento personal={personal} extracurriculars={extracurriculars} socials={socials} />
+          <Credentials
+            education={portfolioData.education}
+            skills={portfolioData.skills}
+            coursework={portfolioData.coursework}
+            memberships={extracurriculars.memberships}
+            onSelectTag={openSearch}
+            revealId={revealId}
+          />
+          <Contact personal={personal} socials={socials} onCopied={announce} />
+        </main>
+
+        <Footer name={personal.name} />
+
+        <CommandPalette
+          isOpen={palette.open}
+          initialQuery={palette.query}
+          data={portfolioData}
+          onClose={closeSearch}
+          onJump={jumpTo}
         />
+        <ResumeModal isOpen={isResumeOpen} onClose={closeResume} pdfUrl={personal.resumePdfUrl} />
 
-        {/* Projects */}
-        <Projects
-          projects={portfolioData.projects}
-          matchingProjectIds={matches.matchingProjectIds}
-          searchQuery={searchQuery}
-          onSelectTag={handleSelectTag}
-        />
-
-        {/* Coursework */}
-        <Coursework
-          coursework={portfolioData.coursework}
-          matchingCourseIds={matches.matchingCourseIds}
-          searchQuery={searchQuery}
-          onSelectTag={handleSelectTag}
-        />
-
-        {/* Technical Skills Matrix */}
-        <SkillsMatrix
-          skills={portfolioData.skills}
-          searchQuery={searchQuery}
-          onSelectSkill={handleSelectTag}
-        />
-
-        {/* Education */}
-        <Education 
-          education={portfolioData.education} 
-        />
-
-        {/* Leadership & Personal Interests */}
-        <Extracurriculars 
-          extracurriculars={portfolioData.extracurriculars} 
-        />
-      </main>
-
-      <Footer socials={portfolioData.socials} />
-
-      {/* Resume Viewer Modal */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-        pdfUrl={portfolioData.personal.resumePdfUrl}
-      />
-
-      {/* Interactive Toast Notification */}
-      {toastMessage && (
-        <div className="toast-notice" role="alert">
-          {toastMessage}
-        </div>
-      )}
-    </div>
+        <p className="sr-only" role="status" aria-live="polite">{status}</p>
+      </div>
+    </LazyMotion>
   );
 }

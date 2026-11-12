@@ -1,130 +1,170 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, m, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react';
+import { FileText, List, MagnifyingGlass, Moon, Sun, Volleyball, X } from '@phosphor-icons/react';
 
-export default function Header({ theme, toggleTheme, onOpenResume }) {
+const LINKS = [
+  { href: '#work', label: 'Work' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' }
+];
+
+export default function Header({ theme, toggleTheme, onOpenResume, onOpenSearch, searchOpen }) {
+  const reduce = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [hovered, setHovered] = useState(null);
+  const { scrollY } = useScroll();
 
-  const closeMenu = () => setMobileMenuOpen(false);
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    const goingDown = y > prev;
+    setHidden(goingDown && y > 240 && !mobileMenuOpen);
+  });
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    const onKey = (e) => e.key === 'Escape' && setMobileMenuOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [mobileMenuOpen]);
 
+  const closeMenu = () => setMobileMenuOpen(false);
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
+
   return (
-    <header className={`site-header ${mobileMenuOpen ? 'menu-open open' : ''}`}>
-      <div className="container header-inner header-container">
-        <a href="#" className="brand-logo" onClick={closeMenu}>
-          <span className="brand-prompt">&gt;</span>
-          <span>gyan.mistry</span>
-        </a>
+    <m.header
+      className={`site-header ${mobileMenuOpen ? 'menu-open' : ''}`}
+      animate={{ y: hidden && !reduce ? -96 : 0 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+    >
+      <div className="container">
+        <div className="nav-shell">
+          <a href="#top" className="brand-logo" onClick={closeMenu} aria-label="Gyan Mistry, back to top">
+            <Volleyball size={24} weight="fill" aria-hidden="true" />
+            <span>Gyan Mistry</span>
+          </a>
 
-        {/* Desktop Navigation */}
-        <nav className="desktop-nav">
-          <ul className="nav-links">
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#coursework">Coursework</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#extracurriculars">Extracurriculars</a></li>
-          </ul>
-        </nav>
-
-        {/* Header Action Buttons */}
-        <div className="header-actions">
-          <button 
-            type="button" 
-            onClick={onOpenResume} 
-            className="btn btn-secondary mono resume-nav-btn"
-            title="View Resume PDF"
-          >
-            Resume.pdf
-          </button>
-
-          <button 
-            type="button" 
-            onClick={toggleTheme} 
-            className="btn-icon theme-toggle-btn" 
-            aria-label="Toggle dark/light theme"
-            title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          >
-            {theme === 'dark' ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            )}
-          </button>
-
-          {/* Mobile Menu Hamburger Toggle */}
-          <button
-            type="button"
-            className="mobile-menu-toggle"
-            onClick={() => setMobileMenuOpen(prev => !prev)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer & Backdrop */}
-      {mobileMenuOpen && (
-        <>
-          <div 
-            className="mobile-nav-backdrop" 
-            onClick={closeMenu} 
-            aria-hidden="true" 
-          />
-          <div className="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
-            <ul className="mobile-nav-list">
-              <li><a href="#experience" onClick={closeMenu}>Experience</a></li>
-              <li><a href="#projects" onClick={closeMenu}>Projects</a></li>
-              <li><a href="#coursework" onClick={closeMenu}>Coursework</a></li>
-              <li><a href="#skills" onClick={closeMenu}>Skills</a></li>
-              <li><a href="#education" onClick={closeMenu}>Education</a></li>
-              <li><a href="#extracurriculars" onClick={closeMenu}>Extracurriculars</a></li>
-              <li className="mobile-drawer-resume-item">
-                <button 
-                  type="button" 
-                  onClick={() => { closeMenu(); onOpenResume(); }} 
-                  className="btn btn-secondary mono mobile-drawer-resume-btn"
-                  title="View Resume PDF"
-                >
-                  📄 View Resume.pdf
-                </button>
-              </li>
+          <nav className="desktop-nav" aria-label="Primary">
+            <ul className="nav-links" onMouseLeave={() => setHovered(null)}>
+              {LINKS.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} onMouseEnter={() => setHovered(link.href)} onFocus={() => setHovered(link.href)}>
+                    {hovered === link.href && !reduce && (
+                      <m.span
+                        layoutId="nav-hover"
+                        className="nav-hover-pill"
+                        transition={{ type: 'spring', stiffness: 500, damping: 38 }}
+                      />
+                    )}
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
+          </nav>
+
+          <div className="header-actions">
+            <button
+              type="button"
+              className="nav-search"
+              onClick={() => onOpenSearch('')}
+              aria-label="Search skills and projects"
+              aria-keyshortcuts="Meta+K Control+K /"
+            >
+              {!searchOpen && (
+                <m.span
+                  layoutId={reduce ? undefined : 'search-surface'}
+                  className="nav-search-surface"
+                  transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                />
+              )}
+              <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
+              <span className="nav-search-label">Search skills</span>
+              <kbd className="nav-search-label" aria-hidden="true">{isMac ? 'Cmd K' : 'Ctrl K'}</kbd>
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="icon-btn theme-toggle-btn"
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <m.span
+                  key={theme}
+                  initial={reduce ? false : { rotate: -90, scale: 0.5, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  exit={{ rotate: 90, scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ display: 'inline-flex' }}
+                >
+                  {theme === 'dark' ? <Sun size={20} weight="bold" /> : <Moon size={20} weight="bold" />}
+                </m.span>
+              </AnimatePresence>
+            </button>
+
+            <button type="button" onClick={onOpenResume} className="btn btn-primary btn-sm nav-resume-btn">
+              <FileText size={16} weight="bold" aria-hidden="true" />
+              View resume
+            </button>
+
+            <button
+              type="button"
+              className="icon-btn mobile-menu-toggle"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav"
+            >
+              {mobileMenuOpen ? <X size={20} weight="bold" /> : <List size={20} weight="bold" />}
+            </button>
           </div>
-        </>
-      )}
-    </header>
+        </div>
+
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <>
+              <m.div
+                key="backdrop"
+                className="mobile-nav-backdrop"
+                onClick={closeMenu}
+                aria-hidden="true"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              />
+              <m.nav
+                key="drawer"
+                id="mobile-nav"
+                className="mobile-nav-drawer"
+                aria-label="Mobile"
+                initial={reduce ? false : { opacity: 0, y: -12, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -12, scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+              >
+                <ul className="mobile-nav-list">
+                  {LINKS.map((link, i) => (
+                    <m.li
+                      key={link.href}
+                      initial={reduce ? false : { opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0, transition: { delay: 0.04 * i } }}
+                    >
+                      <a href={link.href} onClick={closeMenu}>{link.label}</a>
+                    </m.li>
+                  ))}
+                  <li>
+                    <button type="button" onClick={() => { closeMenu(); onOpenResume(); }}>
+                      View resume
+                    </button>
+                  </li>
+                </ul>
+              </m.nav>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    </m.header>
   );
 }
