@@ -48,10 +48,10 @@ export function createCourt(Matter, canvas, { skills, reduceMotion = false }) {
     return { floorTop, netHeight, netTop: floorTop - netHeight, netX: W / 2 };
   };
 
+  // Layout size, not getBoundingClientRect: the panel animates in with scale and rotate.
   const measure = () => {
-    const rect = canvas.getBoundingClientRect();
-    W = Math.max(rect.width, 200);
-    H = Math.max(rect.height, 200);
+    W = Math.max(canvas.clientWidth, 200);
+    H = Math.max(canvas.clientHeight, 200);
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
@@ -63,15 +63,15 @@ export function createCourt(Matter, canvas, { skills, reduceMotion = false }) {
     const opts = { isStatic: true, restitution: 0.4, friction: 0.6, label: 'static' };
     statics = [
       Bodies.rectangle(W / 2, floorTop + 200, W * 3, 400, opts),
-      Bodies.rectangle(-100, H / 2 - 400, 200, H * 3, opts),
-      Bodies.rectangle(W + 100, H / 2 - 400, 200, H * 3, opts),
+      Bodies.rectangle(-100, H / 2 - 300, 200, H + 1600, opts),
+      Bodies.rectangle(W + 100, H / 2 - 300, 200, H + 1600, opts),
       Bodies.rectangle(W / 2, -900, W * 3, 200, opts),
       Bodies.rectangle(netX, floorTop - netHeight / 2, 14, netHeight, { ...opts, restitution: 0.2, label: 'net' })
     ];
     Composite.add(world, statics);
   };
 
-  const fontSize = () => (W < 480 ? 13 : 15);
+  const fontSize = () => (W < 480 || H < 380 ? 13 : 15);
 
   const makePill = (text, i, x, y) => {
     const fs = fontSize();
@@ -265,7 +265,10 @@ export function createCourt(Matter, canvas, { skills, reduceMotion = false }) {
   /* ----------------------------------------------------------- interaction */
   const local = (e) => {
     const rect = canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * W,
+      y: ((e.clientY - rect.top) / rect.height) * H
+    };
   };
 
   const onPointerDown = (e) => {
@@ -332,10 +335,13 @@ export function createCourt(Matter, canvas, { skills, reduceMotion = false }) {
     measure();
     buildStatics();
     if (prevW && prevH) {
+      const { floorTop } = geometry();
       for (const b of dynamicBodies()) {
+        const hw = (b.bounds.max.x - b.bounds.min.x) / 2 + 2;
+        const hh = (b.bounds.max.y - b.bounds.min.y) / 2 + 2;
         Body.setPosition(b, {
-          x: Math.min(Math.max(b.position.x * (W / prevW), 30), W - 30),
-          y: Math.min(b.position.y * (H / prevH), geometry().floorTop - 30)
+          x: Math.min(Math.max(b.position.x * (W / prevW), hw), Math.max(W - hw, hw)),
+          y: Math.min(b.position.y * (H / prevH), floorTop - hh)
         });
       }
     }
@@ -355,6 +361,8 @@ export function createCourt(Matter, canvas, { skills, reduceMotion = false }) {
 
   measure();
   buildStatics();
+  // Small courts (phones, landscape) get fewer pills so the pile stays below the net.
+  skills = skills.slice(0, Math.max(8, Math.round((W * H) / 11000)));
 
   if (reduceMotion) {
     skills.forEach((s, i) => addPill(s, i, geometry().floorTop - 40 - (i % 6) * 46));

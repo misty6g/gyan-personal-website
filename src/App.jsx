@@ -48,6 +48,15 @@ export default function App() {
   const closeSearch = useCallback(() => setPalette((p) => ({ ...p, open: false })), []);
   const closeResume = useCallback(() => setIsResumeOpen(false), []);
 
+  // Android Chrome won't render a PDF in an iframe and iOS Safari shows only page one.
+  const openResume = useCallback(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      window.open(portfolioData.personal.resumePdfUrl, '_blank', 'noopener');
+    } else {
+      setIsResumeOpen(true);
+    }
+  }, []);
+
   useEffect(() => {
     const onKey = (e) => {
       const typing = /input|textarea|select/i.test(document.activeElement?.tagName || '');
@@ -123,13 +132,13 @@ export default function App() {
         <Header
           theme={theme}
           toggleTheme={toggleTheme}
-          onOpenResume={() => setIsResumeOpen(true)}
+          onOpenResume={openResume}
           onOpenSearch={openSearch}
           searchOpen={palette.open}
         />
 
         <main id="main">
-          <CourtHero personal={personal} onOpenResume={() => setIsResumeOpen(true)} onCopied={announce} />
+          <CourtHero personal={personal} onOpenResume={openResume} onCopied={announce} />
           <Marquee items={portfolioData.badges.map((b) => b.label)} />
           <RallyTimeline experiences={experiences} onSelectTag={openSearch} />
           <ProjectReel projects={projects} onSelectTag={openSearch} />

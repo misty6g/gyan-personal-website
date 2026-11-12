@@ -1,9 +1,12 @@
 import React from 'react';
 import { m, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { ArrowUpRight, SpotifyLogo } from '@phosphor-icons/react';
+import { useMediaQuery } from '../lib/useMediaQuery';
 
 function TiltPhoto({ src, alt }) {
-  const reduce = useReducedMotion();
+  const finePointer = useMediaQuery('(pointer: fine)');
+  const reducedMotion = useReducedMotion();
+  const reduce = reducedMotion || !finePointer;
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
   const spring = { stiffness: 180, damping: 18 };

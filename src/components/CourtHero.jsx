@@ -3,6 +3,7 @@ import { m, useReducedMotion } from 'motion/react';
 import { FileText, Volleyball } from '@phosphor-icons/react';
 import Magnetic from './Magnetic';
 import CopyEmailButton from './CopyEmailButton';
+import { useMediaQuery } from '../lib/useMediaQuery';
 
 const LETTER_SPRING = { type: 'spring', stiffness: 520, damping: 22, mass: 0.9 };
 
@@ -35,6 +36,7 @@ function BouncyName({ lines, reduce }) {
 
 export default function CourtHero({ personal, onOpenResume, onCopied }) {
   const reduce = useReducedMotion();
+  const finePointer = useMediaQuery('(pointer: fine)');
   const canvasRef = useRef(null);
   const [first, ...rest] = personal.preferredName.split(' ');
 
@@ -104,7 +106,11 @@ export default function CourtHero({ personal, onOpenResume, onCopied }) {
         >
           <canvas ref={canvasRef} className="court-canvas" aria-hidden="true" />
           <p className="court-hint" aria-hidden="true">
-            {reduce ? 'Some of what I build with' : 'Drag the ball, or tap the court to spike it'}
+            {reduce
+              ? 'Some of what I build with'
+              : finePointer
+                ? 'Drag the ball, or click the court to spike it'
+                : 'Tap the court to spike the ball'}
           </p>
         </m.div>
       </div>
