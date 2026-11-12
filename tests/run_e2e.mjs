@@ -11,7 +11,7 @@ const PROJECT_ROOT = path.resolve(__dirname, '..');
 const TIERS = [
   {
     id: 'tier1',
-    name: 'Tier 1: Feature Coverage (F01 - F19)',
+    name: 'Tier 1: Feature Coverage',
     file: path.resolve(__dirname, 'tier1_features.test.mjs'),
   },
   {
@@ -26,7 +26,7 @@ const TIERS = [
   },
   {
     id: 'tier4',
-    name: 'Tier 4: Real-World Application Scenarios',
+    name: 'Tier 4: Real-World Scenarios',
     file: path.resolve(__dirname, 'tier4_scenarios.test.mjs'),
   },
 ];
